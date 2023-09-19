@@ -1,12 +1,25 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { CreateUserDto } from './dto/create-auth.dto';
 
+interface createUserResponse {
+  message: string;
+}
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
   constructor(
-    @Inject('AUTH_MICROSERVICE') private readonly authClient: ClientKafka,
+    @Inject('AUTH_MICROSERVICE') private readonly gateWayClient: ClientKafka,
   ) {}
-  createUser() {
-    this.authClient.emit('create_user', 'hello create_user');
+  createUser(data: CreateUserDto) {
+    return this.gateWayClient.send<createUserResponse, CreateUserDto>(
+      'get_user',
+      data,
+    );
+  }
+  loginUser() {
+    return 'login';
+  }
+  onModuleInit() {
+    this.gateWayClient.subscribeToResponseOf('get_user');
   }
 }
