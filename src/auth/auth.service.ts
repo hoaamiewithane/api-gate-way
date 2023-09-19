@@ -1,6 +1,7 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { CreateUserDto } from './dto/create-auth.dto';
+import { SignInUserDto } from './dto/sign-in-auth.dto';
 
 interface createUserResponse {
   message: string;
@@ -12,14 +13,18 @@ export class AuthService implements OnModuleInit {
   ) {}
   createUser(data: CreateUserDto) {
     return this.gateWayClient.send<createUserResponse, CreateUserDto>(
-      'get_user',
+      'create_user',
       data,
     );
   }
-  loginUser() {
-    return 'login';
+  signInUser(data: SignInUserDto) {
+    return this.gateWayClient.send<createUserResponse, SignInUserDto>(
+      'sign_in_user',
+      data,
+    );
   }
   onModuleInit() {
-    this.gateWayClient.subscribeToResponseOf('get_user');
+    this.gateWayClient.subscribeToResponseOf('create_user');
+    this.gateWayClient.subscribeToResponseOf('sign_in_user');
   }
 }
