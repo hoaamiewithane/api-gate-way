@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AUTH_MICROSERVICE, MRV_PORT } from 'src/constants';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 
 @Module({
   imports: [
@@ -22,13 +21,8 @@ import { AuthService } from './auth.service';
         },
       },
     ]),
-    JwtModule.register({
-      global: true,
-      secret: process.env.SECRECT_KEY,
-      signOptions: { expiresIn: '3600s' },
-    }),
   ],
-  controllers: [AuthController],
-  providers: [AuthService],
+  controllers: [UserController],
+  providers: [UserService],
 })
-export class AuthModule {}
+export class UserModule {}

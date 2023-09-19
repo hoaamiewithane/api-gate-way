@@ -23,8 +23,14 @@ export class AuthService implements OnModuleInit {
       data,
     );
   }
+
+  getMe(token: string) {
+    return this.gateWayClient.send('get_me', token);
+  }
+
   onModuleInit() {
     this.gateWayClient.subscribeToResponseOf('create_user');
     this.gateWayClient.subscribeToResponseOf('sign_in_user');
+    this.gateWayClient.subscribeToResponseOf('get_me');
   }
 }
