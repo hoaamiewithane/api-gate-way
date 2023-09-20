@@ -39,6 +39,11 @@ export class AuthController {
     return this.authService.signInUser(data);
   }
 
+  @Post('sign-in2')
+  handleSignInUser2() {
+    return this.authService.signInUser2();
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
   handleGetMe(@Headers('authorization') authorization: string) {

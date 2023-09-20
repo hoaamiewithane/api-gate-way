@@ -24,6 +24,10 @@ export class AuthService implements OnModuleInit {
     );
   }
 
+  signInUser2() {
+    this.gateWayClient.emit('sign_in_user2', 'api -> auth');
+  }
+
   getMe(token: string) {
     return this.gateWayClient.send('get_me', token);
   }
