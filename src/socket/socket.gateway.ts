@@ -2,13 +2,12 @@ import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
-  OnGatewayInit,
 } from '@nestjs/websockets';
 import { UpdateSocketDto } from './dto/update-socket.dto';
 import { SocketService } from './socket.service';
 
 @WebSocketGateway(8001, { cors: true })
-export class SocketGateway implements OnGatewayInit {
+export class SocketGateway {
   constructor(private readonly socketService: SocketService) {}
 
   @SubscribeMessage('newUser')
@@ -34,9 +33,5 @@ export class SocketGateway implements OnGatewayInit {
   @SubscribeMessage('removeSocket')
   remove(@MessageBody() id: number) {
     return this.socketService.remove(id);
-  }
-
-  afterInit() {
-    return '';
   }
 }
