@@ -4,6 +4,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AUTH_MICROSERVICE, MRV_PORT } from 'src/constants';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt.strategy';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
   imports: [
@@ -25,10 +27,10 @@ import { AuthService } from './auth.service';
     JwtModule.register({
       global: true,
       secret: process.env.SECRECT_KEY,
-      signOptions: { expiresIn: '3600s' },
+      signOptions: { expiresIn: 3600 },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy, GoogleStrategy],
 })
 export class AuthModule {}

@@ -3,9 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { GoogleStrategy } from './google.strategy';
 import { UserModule } from './user/user.module';
-
+import { SocketModule } from './socket/socket.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -13,8 +12,9 @@ import { UserModule } from './user/user.module';
     }),
     AuthModule,
     UserModule,
+    SocketModule,
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy],
+  providers: [AppService],
 })
 export class AppModule {}

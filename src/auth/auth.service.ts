@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { CreateUserDto } from './dto/create-auth.dto';
+import { CreateUserDto, googleRequest } from './dto/create-auth.dto';
 import { SignInUserDto } from './dto/sign-in-auth.dto';
 
 interface createUserResponse {
@@ -28,9 +28,14 @@ export class AuthService implements OnModuleInit {
     return this.gateWayClient.send('get_me', token);
   }
 
+  loginWithGoogle(payload: googleRequest) {
+    return this.gateWayClient.send('login_with_google', payload.user);
+  }
+
   onModuleInit() {
     this.gateWayClient.subscribeToResponseOf('create_user');
     this.gateWayClient.subscribeToResponseOf('sign_in_user');
     this.gateWayClient.subscribeToResponseOf('get_me');
+    this.gateWayClient.subscribeToResponseOf('login_with_google');
   }
 }
