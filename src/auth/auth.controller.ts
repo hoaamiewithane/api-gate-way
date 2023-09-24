@@ -26,8 +26,8 @@ import { Req } from '@nestjs/common';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @HttpCode(201)
   @Post('sign-up')
+  @HttpCode(201)
   handleUserCreate(
     @Payload(ValidationPipe) data: CreateUserDto,
   ): Observable<createUserResponse> {

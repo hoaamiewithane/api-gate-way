@@ -6,6 +6,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { GoogleStrategy } from './google.strategy';
+import { Partitioners } from 'kafkajs';
 
 @Module({
   imports: [
@@ -15,11 +16,14 @@ import { GoogleStrategy } from './google.strategy';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'auth',
+            clientId: 'gate-way-service',
             brokers: [`localhost:${MRV_PORT}`],
           },
           consumer: {
             groupId: 'auth-consumer',
+          },
+          producer: {
+            createPartitioner: Partitioners.LegacyPartitioner,
           },
         },
       },
