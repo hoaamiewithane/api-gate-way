@@ -8,19 +8,17 @@ import {
   Post,
   UseGuards,
   ValidationPipe,
-  // Req,
 } from '@nestjs/common';
 import { Payload } from '@nestjs/microservices';
+import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import {
   CreateUserDto,
+  GoogleDto,
   createUserResponse,
-  googleRequest,
 } from './dto/create-auth.dto';
 import { SignInUserDto } from './dto/sign-in-auth.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { Req } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
@@ -59,17 +57,11 @@ export class AuthController {
       throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-  @UseGuards(AuthGuard('google'))
-  @Get('google')
-  async googleAuth() {
-    return null;
-  }
 
-  @UseGuards(AuthGuard('google'))
-  @Get('google/redirect')
-  googleAuthRedirect(@Req() req: googleRequest) {
+  @Post('google')
+  googleAuth(@Payload() data: GoogleDto) {
     try {
-      return this.authService.loginWithGoogle(req);
+      return this.authService.loginWithGoogle(data.email);
     } catch (err) {
       throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }

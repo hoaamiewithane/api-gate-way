@@ -33,3 +33,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   email: string;
 }
+
+export class GoogleDto {
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+}

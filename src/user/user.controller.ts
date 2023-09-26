@@ -1,4 +1,11 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { AdminGuard } from 'src/auth/auth.adminGuard';
 import { UserService } from './user.service';
 
@@ -9,7 +16,11 @@ export class UserController {
 
   @Get('list-user')
   findAll() {
-    return this.userService.findAll();
+    try {
+      return this.userService.findAll();
+    } catch (err) {
+      throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get(':id')
