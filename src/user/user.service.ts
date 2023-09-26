@@ -14,8 +14,9 @@ export class UserService implements OnModuleInit {
     return this.gateWayClient.send('find_one_user', id);
   }
 
-  onModuleInit() {
+  async onModuleInit() {
     this.gateWayClient.subscribeToResponseOf('find_all_user');
     this.gateWayClient.subscribeToResponseOf('find_one_user');
+    await this.gateWayClient.connect();
   }
 }

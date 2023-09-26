@@ -32,10 +32,11 @@ export class AuthService implements OnModuleInit {
     return this.gateWayClient.send('login_with_google', payload);
   }
 
-  onModuleInit() {
+  async onModuleInit() {
     this.gateWayClient.subscribeToResponseOf('create_user');
     this.gateWayClient.subscribeToResponseOf('sign_in_user');
     this.gateWayClient.subscribeToResponseOf('get_me');
     this.gateWayClient.subscribeToResponseOf('login_with_google');
+    await this.gateWayClient.connect();
   }
 }
