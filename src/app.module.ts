@@ -4,7 +4,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { SocketModule } from './socket/socket.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -12,7 +11,6 @@ import { SocketModule } from './socket/socket.module';
     }),
     AuthModule,
     UserModule,
-    SocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
