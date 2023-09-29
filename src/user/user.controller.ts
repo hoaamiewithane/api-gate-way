@@ -4,6 +4,8 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  ParseIntPipe,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/auth/auth.adminGuard';
@@ -15,9 +17,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('list-user')
-  findAll() {
+  findAll(
+    @Query('limit', ParseIntPipe) limit: number = 10,
+    @Query('offset', ParseIntPipe) offset: number = 0,
+    @Query('searchTerm') searchTerm?: string,
+  ) {
     try {
-      return this.userService.findAll();
+      return this.userService.findAll({ limit, offset, searchTerm });
     } catch (err) {
       throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
