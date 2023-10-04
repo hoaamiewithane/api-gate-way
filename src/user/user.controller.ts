@@ -1,14 +1,16 @@
 import {
+  Body,
   Controller,
   Get,
   HttpException,
   HttpStatus,
   Param,
-  ParseIntPipe,
+  Patch,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/auth/auth.adminGuard';
+import { EditUserDto } from './dto/edit-user.dto';
 import { UserService } from './user.service';
 
 @UseGuards(AdminGuard)
@@ -18,12 +20,27 @@ export class UserController {
 
   @Get('list-user')
   findAll(
-    @Query('limit', ParseIntPipe) limit: number = 10,
-    @Query('offset', ParseIntPipe) offset: number = 0,
+    @Query('limit') limit: number = 10,
+    @Query('offset') offset: number = 0,
     @Query('searchTerm') searchTerm?: string,
+    @Query('role') role?: 'admin' | 'user',
   ) {
+    if (isNaN(limit) || isNaN(offset)) {
+      throw new HttpException(
+        'Limit and offset must be numbers',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (role && !['admin', 'user'].includes(role)) {
+      throw new HttpException('Error', HttpStatus.BAD_REQUEST);
+    }
     try {
-      return this.userService.findAll({ limit, offset, searchTerm });
+      return this.userService.findAll({
+        limit,
+        offset,
+        searchTerm,
+        role,
+      });
     } catch (err) {
       throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -33,6 +50,15 @@ export class UserController {
   findOne(@Param('id') id: string) {
     try {
       return this.userService.findOne(+id);
+    } catch (err) {
+      throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Patch(':id')
+  editUser(@Param('id') id: string, @Body() editUserDto: EditUserDto) {
+    try {
+      return this.userService.editUser(+id, editUserDto);
     } catch (err) {
       throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
