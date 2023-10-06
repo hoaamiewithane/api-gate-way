@@ -9,11 +9,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from 'src/auth/auth.adminGuard';
 import { EditUserDto } from './dto/edit-user.dto';
 import { UserService } from './user.service';
 
-@UseGuards(AdminGuard)
+@UseGuards(AuthGuard('jwt'))
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -55,6 +56,7 @@ export class UserController {
     }
   }
 
+  @UseGuards(AdminGuard)
   @Patch(':id')
   editUser(@Param('id') id: string, @Body() editUserDto: EditUserDto) {
     try {

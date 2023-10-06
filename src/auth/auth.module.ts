@@ -17,7 +17,7 @@ import { JwtStrategy } from './jwt.strategy';
         options: {
           client: {
             clientId: 'gate-way-service',
-            brokers: [process.env.BROKER_URL],
+            brokers: [process.env['BROKER_URL']],
           },
           consumer: {
             groupId: 'auth-consumer',
@@ -30,7 +30,7 @@ import { JwtStrategy } from './jwt.strategy';
     ]),
     JwtModule.register({
       global: true,
-      secret: process.env.SECRECT_KEY,
+      secret: process.env['SECRET_KEY'],
       signOptions: { expiresIn: 3600 * 24 },
     }),
   ],

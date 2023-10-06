@@ -1,12 +1,14 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { EditUserDto } from './dto/edit-user.dto';
+import { AUTH_MICROSERVICE } from '../constants';
 
 @Injectable()
 export class UserService implements OnModuleInit {
   constructor(
-    @Inject('AUTH_MICROSERVICE') private readonly gateWayClient: ClientKafka,
+    @Inject(AUTH_MICROSERVICE) private readonly gateWayClient: ClientKafka,
   ) {}
+
   findAll(params: {
     limit?: number;
     offset?: number;
@@ -25,7 +27,7 @@ export class UserService implements OnModuleInit {
       id,
       role: payload?.role,
       profile: {
-        fistName: payload?.firstName,
+        firstName: payload?.firstName,
         lastName: payload?.lastName,
         gender: payload?.gender,
       },

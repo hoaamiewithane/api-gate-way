@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
+import { VesselService } from './vessel.service';
+import { VesselController } from './vessel.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { VESSEL_SERVICE } from '../constants';
 import { Partitioners } from 'kafkajs';
-import { AUTH_MICROSERVICE } from '../constants';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: AUTH_MICROSERVICE,
+        name: VESSEL_SERVICE,
         transport: Transport.KAFKA,
         options: {
           client: {
@@ -17,7 +17,7 @@ import { AUTH_MICROSERVICE } from '../constants';
             brokers: [`localhost:9092`],
           },
           consumer: {
-            groupId: 'user-consumer',
+            groupId: 'vessel-consumer',
           },
           producer: {
             createPartitioner: Partitioners.LegacyPartitioner,
@@ -26,7 +26,7 @@ import { AUTH_MICROSERVICE } from '../constants';
       },
     ]),
   ],
-  controllers: [UserController],
-  providers: [UserService],
+  controllers: [VesselController],
+  providers: [VesselService],
 })
-export class UserModule {}
+export class VesselModule {}

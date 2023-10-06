@@ -1,5 +1,5 @@
-import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -9,6 +9,9 @@ async function bootstrap() {
       disableErrorMessages: true,
     }),
   );
-  await app.listen(process.env.PORT as string);
+  await app.listen(process.env['PORT'] as string);
 }
-bootstrap();
+
+bootstrap().then(() => {
+  console.log('gate-way started');
+});

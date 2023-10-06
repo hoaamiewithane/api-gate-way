@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { VesselModule } from './vessel/vessel.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -11,6 +12,7 @@ import { UserModule } from './user/user.module';
     }),
     AuthModule,
     UserModule,
+    VesselModule,
   ],
   controllers: [AppController],
   providers: [AppService],
