@@ -6,4 +6,6 @@ export class CreateVesselDto {
 
   @IsNotEmpty()
   maxWeight: number;
+  @IsNotEmpty()
+  users: number[];
 }
