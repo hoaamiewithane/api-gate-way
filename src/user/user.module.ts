@@ -4,6 +4,7 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { Partitioners } from 'kafkajs';
 import { AUTH_MICROSERVICE } from '../constants';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -27,6 +28,6 @@ import { AUTH_MICROSERVICE } from '../constants';
     ]),
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, JwtService],
 })
 export class UserModule {}
