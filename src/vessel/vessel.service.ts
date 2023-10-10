@@ -14,7 +14,6 @@ export class VesselService implements OnModuleInit {
   }
 
   getList(param: any) {
-    console.log({ param });
     return this.gateWayClient.send('get_ships', param);
   }
 
