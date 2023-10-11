@@ -1,15 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from '../src/app.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AUTH_MICROSERVICE } from 'src/constants';
-import { Partitioners } from 'kafkajs';
+import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Test, TestingModule } from '@nestjs/testing';
+import { Partitioners } from 'kafkajs';
 import { AuthController } from 'src/auth/auth.controller';
 import { AuthService } from 'src/auth/auth.service';
-import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { GoogleStrategy } from 'src/auth/google.strategy';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
+import { AUTH_MICROSERVICE } from 'src/constants';
+import * as request from 'supertest';
 
 describe('auth (e2e)', () => {
   let app: INestApplication;
@@ -20,6 +20,9 @@ describe('auth (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
+        ConfigModule.forRoot({
+          isGlobal: true,
+        }),
         ClientsModule.register([
           {
             name: AUTH_MICROSERVICE,
@@ -50,12 +53,12 @@ describe('auth (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
-  });
+  }, 3000);
 
   it('/auth/sign-in (POST)', () => {
     return request(app.getHttpServer())
       .post('/auth/sign-in')
       .send(testUser)
       .expect(200);
-  });
+  }, 2000);
 });

@@ -13,6 +13,20 @@ export class AuthService implements OnModuleInit {
     @Inject(AUTH_MICROSERVICE) private readonly gateWayClient: ClientKafka,
   ) {}
 
+  async onModuleInit() {
+    const requestPatterns = [
+      'create_user',
+      'sign_in_user',
+      'get_me',
+      'login_with_google',
+    ];
+    requestPatterns.forEach((pattern) => {
+      this.gateWayClient.subscribeToResponseOf(pattern);
+    });
+
+    await this.gateWayClient.connect();
+  }
+
   createUser(data: CreateUserDto) {
     return this.gateWayClient.send<createUserResponse, CreateUserDto>(
       'create_user',
@@ -33,13 +47,5 @@ export class AuthService implements OnModuleInit {
 
   loginWithGoogle(payload: string) {
     return this.gateWayClient.send('login_with_google', payload);
-  }
-
-  async onModuleInit() {
-    this.gateWayClient.subscribeToResponseOf('create_user');
-    this.gateWayClient.subscribeToResponseOf('sign_in_user');
-    this.gateWayClient.subscribeToResponseOf('get_me');
-    this.gateWayClient.subscribeToResponseOf('login_with_google');
-    await this.gateWayClient.connect();
   }
 }
