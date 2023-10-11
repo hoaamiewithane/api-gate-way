@@ -25,12 +25,7 @@ export class UserService implements OnModuleInit {
   editUser(id: number, payload: EditUserDto) {
     return this.gateWayClient.send('edit_user', {
       id,
-      role: payload?.role,
-      profile: {
-        firstName: payload?.firstName,
-        lastName: payload?.lastName,
-        gender: payload?.gender,
-      },
+      ...payload,
     });
   }
 
