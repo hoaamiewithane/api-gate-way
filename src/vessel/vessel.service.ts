@@ -22,7 +22,7 @@ export class VesselService implements OnModuleInit {
   }
 
   updateShipById(id: number, updateShipDto: Partial<CreateVesselDto>) {
-    return this.gateWayClient.send('update_ship', { id, updateShipDto });
+    return this.gateWayClient.send('update_ship', { id, ...updateShipDto });
   }
 
   async onModuleInit() {
