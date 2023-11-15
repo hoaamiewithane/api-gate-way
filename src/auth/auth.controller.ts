@@ -16,8 +16,8 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import {
   CreateUserDto,
-  GoogleDto,
   createUserResponse,
+  GoogleDto,
 } from './dto/create-auth.dto';
 import { SignInUserDto } from './dto/sign-in-auth.dto';
 
@@ -27,6 +27,7 @@ interface tokenPayload {
   username: string;
   role: string;
 }
+
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -67,6 +68,17 @@ export class AuthController {
       return this.authService.getMe(payload.email);
     } catch (err) {
       throw new HttpException('Error', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Post('refresh-token')
+  @HttpCode(200)
+  refreshToken(@Headers('authorization') authorization: string) {
+    const token = authorization?.split(' ')?.[1];
+    try {
+      return this.authService.refreshToken(token);
+    } catch (err) {
+      throw new HttpException('Error', HttpStatus.BAD_REQUEST);
     }
   }
 

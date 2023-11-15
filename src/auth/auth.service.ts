@@ -7,6 +7,7 @@ import { SignInUserDto } from './dto/sign-in-auth.dto';
 interface createUserResponse {
   message: string;
 }
+
 @Injectable()
 export class AuthService implements OnModuleInit {
   constructor(
@@ -19,6 +20,7 @@ export class AuthService implements OnModuleInit {
       'sign_in_user',
       'get_me',
       'login_with_google',
+      'refresh_token',
     ];
     requestPatterns.forEach((pattern) => {
       this.gateWayClient.subscribeToResponseOf(pattern);
@@ -39,6 +41,10 @@ export class AuthService implements OnModuleInit {
       'sign_in_user',
       data,
     );
+  }
+
+  refreshToken(token: string) {
+    return this.gateWayClient.send('refresh_token', token);
   }
 
   getMe(email: string) {
