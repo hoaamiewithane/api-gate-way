@@ -9,9 +9,9 @@ async function bootstrap() {
       disableErrorMessages: true,
     }),
   );
-  await app.listen(process.env['PORT'] as string);
+  await app.listen(process.env['PORT']);
 }
 
 bootstrap().then(() => {
-  console.log('gate-way started');
+  console.log('gate-way started', process.env['PORT']);
 });
